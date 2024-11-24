@@ -1,4 +1,4 @@
-import { ErrorUtils, ERROR } from './index.js';
+import { ErrorUtils, WEEK } from './index.js';
 
 class Validator {
   static DELIMITER = ',';
@@ -7,21 +7,22 @@ class Validator {
     ErrorUtils.handleError(!input.includes(Validator.DELIMITER));
   }
 
-  static validateMonth(input) {
-    const isValidMonth =
-      Number.isInteger(Number(input)) && Number(input) >= 1 && Number(input) <= 12;
+  static validateMonth(month) {
+    const isValidMonth = !isNaN(month) && Number(month) >= 1 && Number(month) <= 12;
 
     ErrorUtils.handleError(!isValidMonth);
   }
 
-  static validateDay(input) {
-    const isValidDay = Number.isInteger(Number(input)) && Number(input) >= 1 && Number(input) <= 31;
+  static validateDay(day) {
+    const isValidDay = WEEK.includes(day);
 
     ErrorUtils.handleError(!isValidDay);
   }
 
   static validateRange(staff) {
-    ErrorUtils.handleError(staff.length < 5 || staff.length > 35);
+    const isValidRange = staff.length >= 5 && staff.length <= 35;
+
+    ErrorUtils.handleError(!isValidRange);
   }
 
   static validateDuplicate(staff) {
