@@ -3,14 +3,20 @@ import { Validator } from '../utils/index.js';
 class Calendar {
   #calendar;
   #holiday;
+  month;
+  day;
 
   constructor(month, day) {
     this.#validateMonthAndDay(month, day);
     this.year = 2024;
-    this.month = month;
+    this.month = Number(month);
     this.day = day;
     this.#holiday = HOLIDAY[month] ?? 0;
     this.#calendar = this.#getCalendar();
+  }
+
+  get month() {
+    return this.month;
   }
 
   get calendar() {

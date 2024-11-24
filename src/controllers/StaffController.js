@@ -3,14 +3,13 @@ import { Staff } from '../models/index.js';
 import { ViewIn } from '../views/index.js';
 
 class StaffController {
-  constructor() {
-    this.staff = new Staff([]);
-  }
-
   async getStaff(message) {
     const staff = await ViewIn.readStaff(message);
     Validator.validateDelimiter(staff);
+    return this.#parseStaff(staff);
+  }
 
+  #parseStaff(staff) {
     return new Staff(staff.split(Validator.DELIMITER));
   }
 }
