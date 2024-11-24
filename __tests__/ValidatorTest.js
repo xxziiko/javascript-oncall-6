@@ -46,37 +46,66 @@ const runExceptions = async ({ inputs = [], retryInputs = [], expected = [] }) =
 };
 
 const retryInputsCalendar = ['1,월'];
-const retryInputsStaff = ['a,b,c,d,e'];
+const retryInputsWeekStaff = ['a,b,c,d,e'];
+const retryInputsHolidayStaff = ['f,g,h,i,j'];
 
 describe('유효성 검사', () => {
   test.each([['1.월'], ['1/월']])('올바르지 않은 구분자', (input) => {
-    runExceptions({ inputs: [input], retryInputs: retryInputsCalendar, expected: ['[ERROR]'] });
+    runExceptions({
+      inputs: [input],
+      retryInputs: [retryInputsCalendar, retryInputsWeekStaff, retryInputsHolidayStaff],
+      expected: ['[ERROR]', '1,월'],
+    });
   });
 
   test.each([['a,월'], ['13,월']])('올바르지 않은 월', (input) => {
-    runExceptions({ inputs: [input], retryInputs: retryInputsCalendar, expected: ['[ERROR]'] });
+    runExceptions({
+      inputs: [input],
+      retryInputs: [retryInputsCalendar, retryInputsWeekStaff, retryInputsHolidayStaff],
+      expected: ['[ERROR]', '1,월'],
+    });
   });
 
   test.each([['1'], ['2,a']])('올바르지 않은 일', (input) => {
-    runExceptions({ inputs: [input], retryInputs: retryInputsCalendar, expected: ['[ERROR]'] });
+    runExceptions({
+      inputs: [input],
+      retryInputs: [retryInputsCalendar, retryInputsWeekStaff, retryInputsHolidayStaff],
+      expected: ['[ERROR]', '1,월'],
+    });
   });
 
   test.each([['a/b/c/d/e']])('올바르지 않은 구분자', (input) => {
-    runExceptions({ inputs: [input], retryInputs: retryInputsStaff, expected: ['[ERROR]'] });
+    runExceptions({
+      inputs: [retryInputsCalendar, input, retryInputsHolidayStaff],
+      retryInputs: [retryInputsWeekStaff],
+      expected: ['[ERROR]', 'a,b,c,d,e'],
+    });
   });
 
   test.each([['a,b,c,d'], ['a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z']])(
     '근무자가 5 미만 35 초과',
     (input) => {
-      runExceptions({ inputs: [input], retryInputs: retryInputsStaff, expected: ['[ERROR]'] });
+      runExceptions({
+        inputs: [retryInputsCalendar, input, retryInputsHolidayStaff],
+        retryInputs: [retryInputsWeekStaff],
+        expected: ['[ERROR]', 'a,b,c,d,e'],
+      });
     }
   );
 
   test.each([['a,a'], ['a,b,c,d,e,a']])('중복된 닉네임', (input) => {
-    runExceptions({ inputs: [input], retryInputs: retryInputsStaff, expected: ['[ERROR]'] });
+    runExceptions({
+      inputs: [retryInputsCalendar, input, retryInputsHolidayStaff],
+      retryInputs: [retryInputsWeekStaff],
+      expected: ['[ERROR]', 'a,b,c,d,e'],
+    });
   });
 
   test.each([['a'], ['a,b,c,d, eeeeeeee']])('닉네임이 5자 이상', (input) => {
-    runExceptions({ inputs: [input], retryInputs: retryInputsStaff, expected: ['[ERROR]'] });
+    runExceptions({
+      inputs: [retryInputsCalendar, input, retryInputsHolidayStaff],
+      retryInputs: [retryInputsWeekStaff],
+      expected: ['[ERROR]', 'a,b,c,d,e'],
+    });
   });
 });

@@ -1,7 +1,5 @@
 import CalendarController from '../src/controllers/CalendarController.js';
-import Calendar from '../src/models/Calendar.js';
 import { MissionUtils } from '@woowacourse/mission-utils';
-import { EOL as LINE_SEPARATOR } from 'os';
 
 const mockQuestions = (inputs) => {
   MissionUtils.Console.readLineAsync = jest.fn();
