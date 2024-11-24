@@ -1,10 +1,10 @@
 import { ViewOut } from '../views/index.js';
-import { errorFormat } from './index.js';
+import { ERROR } from './constants.js';
 
 class ErrorUtils {
-  static handleError(condition, errorMessages) {
+  static handleError(condition) {
     if (condition) {
-      throw new Error(errorFormat(errorMessages));
+      throw new Error(ERROR);
     }
   }
 
